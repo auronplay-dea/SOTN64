@@ -22,7 +22,7 @@ jobs:
         run: npm install -g libdragon
 
       - name: Preparar compilador
-        run: libdragon update toolchain
+        run: libdragon update
 
       - name: Compilar ROM
         run: libdragon make
