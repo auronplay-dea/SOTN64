@@ -1,0 +1,35 @@
+name: Build SOTN64 ROM
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Libdragon
+        run: npm install -g libdragon
+
+      - name: Preparar compilador
+        run: libdragon update toolchain
+
+      - name: Compilar ROM
+        run: libdragon make
+
+      - name: Guardar ROM
+        uses: actions/upload-artifact@v4
+        with:
+          name: SOTN64-ROM
+          path: build/*.z64
+          if-no-files-found: error
