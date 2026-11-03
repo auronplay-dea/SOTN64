@@ -1,3 +1,4 @@
+
 name: Build SOTN64 ROM
 
 on:
@@ -16,20 +17,32 @@ jobs:
       - name: Preparar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Instalar Libdragon
         run: npm install -g libdragon
 
-      - name: Preparar compilador
-        run: libdragon update
+      - name: Inicializar proyecto temporal
+        run: |
+          mkdir -p "$RUNNER_TEMP/sotn64"
+          cd "$RUNNER_TEMP/sotn64"
+          git init
+          libdragon init
+
+      - name: Copiar nuestro código
+        run: |
+          cp "$GITHUB_WORKSPACE/src/main.c" "$RUNNER_TEMP/sotn64/src/main.c"
 
       - name: Compilar ROM
-        run: libdragon make
+        run: |
+          cd "$RUNNER_TEMP/sotn64"
+          libdragon make
+          find . -name "*.z64" -print
 
       - name: Guardar ROM
         uses: actions/upload-artifact@v4
         with:
           name: SOTN64-ROM
-          path: build/*.z64
+          path: ${{ runner.temp }}/sotn64/**/*.z64
           if-no-files-found: error
+
