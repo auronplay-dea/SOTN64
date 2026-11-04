@@ -21,6 +21,9 @@ jobs:
 
       - name: Instalar Libdragon
         run: npm install -g libdragon
+      
+      - name: Descargar entorno Libdragon
+        run: docker pull --platform linux/amd64 ghcr.io/dragonminded/libdragon:latest
 
       - name: Inicializar proyecto temporal
         run: |
