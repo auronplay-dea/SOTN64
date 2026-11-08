@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Descargar entorno Libdragon
-        run: docker pull --platform linux/amd64 ghcr.io/dragonminded/libdragon:latest
+        run: docker pull --platform linux/amd64 ghcr.io/dragonminded/libdragon@sha256:9fe2843c9b7289393c1885be62391140e8b4cdb3edbc715f202dea16f554c5d2
 
       - name: Inicializar proyecto temporal
         run: |
