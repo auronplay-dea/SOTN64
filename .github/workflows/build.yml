@@ -5,7 +5,11 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-
+    
+permissions:
+  contents: read
+  packages: read
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,6 +26,13 @@ jobs:
       - name: Instalar Libdragon
         run: npm install -g libdragon
       
+      - name: Iniciar sesión en GitHub Packages
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Descargar entorno Libdragon
         run: docker pull --platform linux/amd64 ghcr.io/dragonminded/libdragon:latest
 
